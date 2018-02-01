@@ -11,8 +11,13 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http'
+
+import { ConfiguracoesPageModule } from '../pages/configuracoes/configuracoes.module'
 import { FeedPageModule } from '../pages/feed/feed.module';
 import { IntroPageModule } from '../pages/intro/intro.module';
+import { PerfilPageModule } from '../pages/perfil/perfil.module';
+import { SobrePageModule } from '../pages/sobre/sobre.module';
+
 import { MovieProvider } from '../providers/movie/movie';
 
 @NgModule({
@@ -25,9 +30,12 @@ import { MovieProvider } from '../providers/movie/movie';
   ],
   imports: [
     BrowserModule,
+    ConfiguracoesPageModule,
     FeedPageModule,
     HttpModule,
     IntroPageModule,
+    PerfilPageModule,
+    SobrePageModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
