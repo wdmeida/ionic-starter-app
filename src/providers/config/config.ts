@@ -5,12 +5,6 @@ const CONFIG_KEY_NAME = 'config'
 @Injectable()
 export class ConfigProvider {
 
-  private config: object = {
-    showSlide: false,
-    name: '',
-    username: ''
-  }
-
   constructor() {}
 
   public getConfigData(): any {

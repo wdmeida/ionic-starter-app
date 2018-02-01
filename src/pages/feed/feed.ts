@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MovieProvider } from '../../providers/movie/movie';
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
 
 /**
  * Generated class for the FeedPage page.
@@ -28,23 +29,59 @@ export class FeedPage {
   }
 
   public lista_filmes= new Array<any>();
+  public loader;
+  public refresher;
+  public isRefreshing: boolean = false;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private movieProvider: MovieProvider
+    private movieProvider: MovieProvider,
+    public loadingCtrl: LoadingController
   ) {
   }
 
-  ionViewDidLoad() {
+  presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Carregando filmes...",
+    });
+    this.loader.present();
+  }
+
+  closeLoading() {
+    this.loader.dismiss();
+  }
+
+  doRefresh(refresher) {
+    this.refresher = refresher;
+    this.isRefreshing = true;
+
+    this.fetchMovies();
+  }
+
+  ionViewDidEnter() {
+    this.fetchMovies();
+  }
+
+  fetchMovies() {
+    this.presentLoading();
+
     this.movieProvider.getLatestMovies().subscribe(
       data => {
         const response = (data as any);
         const obj_return = JSON.parse(response._body);
         this.lista_filmes = obj_return.results;
-        console.log(obj_return);
+        this.closeLoading();
+        if (this.isRefreshing) {
+          this.refresher.complete();
+          this.isRefreshing = false;
+        }
       }, error => {
-        console.log(error);
+        this.closeLoading();
+        if (this.isRefreshing) {
+          this.refresher.complete();
+          this.isRefreshing = false;
+        }
       });
   }
 }
