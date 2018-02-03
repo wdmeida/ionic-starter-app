@@ -20,4 +20,7 @@ export class MovieProvider {
     return this.http.get(`${this.baseApiPath}/movie/popular?api_key=${API.KEY}`);
   }
 
+  public getMovieDetails(movieId) {
+    return this.http.get(`${this.baseApiPath}/movie/${movieId}?api_key=${API.KEY}`);
+  }
 }
