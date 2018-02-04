@@ -16,8 +16,11 @@ export class MovieProvider {
     console.log('Hello MovieProvider Provider');
   }
 
-  public getLatestMovies() {
-    return this.http.get(`${this.baseApiPath}/movie/popular?api_key=${API.KEY}`);
+  public getLatestMovies(page: number = 1) {
+    return this.http.get(`${this.baseApiPath}/movie/popular?page=${page}&api_key=${API.KEY}`);
   }
 
+  public getMovieDetails(movieId) {
+    return this.http.get(`${this.baseApiPath}/movie/${movieId}?api_key=${API.KEY}`);
+  }
 }
