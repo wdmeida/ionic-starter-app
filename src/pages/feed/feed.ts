@@ -30,9 +30,12 @@ export class FeedPage {
   }
 
   public lista_filmes= new Array<any>();
+  public page: number = 1;
+
   public loader;
   public refresher;
   public isRefreshing: boolean = false;
+  public infiniteScroll;
 
   constructor(
     public navCtrl: NavController,
@@ -68,14 +71,27 @@ export class FeedPage {
     this.navCtrl.push(FilmeDetalhesPage, { id });
   }
 
-  fetchMovies() {
+  doInfinite(infiniteScroll) {
+    this.page++;
+    this.infiniteScroll = infiniteScroll;
+    this.fetchMovies(true);
+  }
+
+  fetchMovies(newPage: boolean = false) {
     this.presentLoading();
 
-    this.movieProvider.getLatestMovies().subscribe(
+    this.movieProvider.getLatestMovies(this.page).subscribe(
       data => {
         const response = (data as any);
         const obj_return = JSON.parse(response._body);
-        this.lista_filmes = obj_return.results;
+
+        if (newPage) {
+          this.lista_filmes = this.lista_filmes.concat(obj_return.results);
+          this.infiniteScroll.complete();
+        } else {
+          this.lista_filmes = obj_return.results;
+        }
+        
         this.closeLoading();
         if (this.isRefreshing) {
           this.refresher.complete();
