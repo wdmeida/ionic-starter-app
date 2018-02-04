@@ -7,5 +7,6 @@
 </ion-header>
 
 <ion-content padding>
-  Esse app fala sobre mim!
+  <img *ngIf="base64Image" [src]="base64Image" alt="Imagem">
+  <button ion-button block (click)="takePicture()">Tirar foto</button>
 </ion-content>
